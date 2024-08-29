@@ -1,0 +1,39 @@
+version: "3"
+build:
+  steps:
+    - type: apt-get
+      packages: ["build-essential", "curl", "git", "nano", "software-properties-common", "ssh", "sudo", "tar", "unzip", "vim", "wget", "zip"]
+    - type: command
+      command: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && rm kubectl
+      directory: /home/devzero
+      user: devzero
+    - type: command
+      command: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+
+launch:
+  steps:
+    - type: command
+      command: |
+        NAMESPACE=dz-arc-systems
+        helm install arc \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
+    - type: command
+      command: |
+        helm install "${INSTALLATION_NAME}" \
+          --namespace "${NAMESPACE}" \
+          --create-namespace \
+          --set githubConfigUrl="${GITHUB_CONFIG_URL}" \
+          --set githubConfigSecret.github_token="${GITHUB_PAT}" \
+          --set containerMode.type="kubernetes" \
+          --set containerMode.kubernetesModeWorkVolumeClaim.accessModes={"ReadWriteOnce"} \
+          --set containerMode.kubernetesModeWorkVolumeClaim.storageClassName=gp2 \
+          --set containerMode.kubernetesModeWorkVolumeClaim.resources.requests.storage=1Gi \
+          --set template.spec.securityContext.fsGroup=1001 \
+          oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set

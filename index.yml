@@ -1,0 +1,21 @@
+index:
+  ./recipes/ci/github-actions.yml:
+    title: GitHub Actions (Self-hosted runner)
+    description: |
+      These steps will allow you to create a workspace with all of the GitHub Actions required packages and binaries for a self-hosted runner.
+    additional: |
+      See DevZero's [GitHub Actions docs](https://docs.devzero.io/docs/how-to-guides/ci/run-github-actions-in-a-devbox) for usage.
+    tags:
+      - CI
+      - GitHub
+  ./recipes/ci/github-arc.yml:
+    title: GitHub Actions (Self-hosted runner)
+    description: |
+      The Actions Runner Controller directions are in beta and running tests which require Docker aren't supported yet.
+    additional: |
+      Adjust the `INSTALLATION_NAME`, `NAMESPACE`, `GITHUB_CONFIG_URL`, and `GITHUB_PAT` variables as needed.
+    tags:
+      - CI
+      - GitHub
+      - Helm
+      - Kubernetes
