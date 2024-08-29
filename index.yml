@@ -9,7 +9,7 @@ index:
       - CI
       - GitHub
   ./recipes/ci/github-arc.yml:
-    title: GitHub Actions (Self-hosted runner)
+    title: GitHub Actions (Actions Runner Controller)
     description: |
       The Actions Runner Controller directions are in beta and running tests which require Docker aren't supported yet.
     additional: |
