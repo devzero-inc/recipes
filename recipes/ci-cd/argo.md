@@ -1,0 +1,12 @@
+version: "3"
+build:
+  steps:
+    - type: apt-get
+      packages: ["curl", "gzip"]
+    - type: command
+      command: |
+        curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.4.17/argo-linux-amd64.gz
+        gunzip argo-linux-amd64.gz
+        chmod +x argo-linux-amd64
+        mv ./argo-linux-amd64 /usr/local/bin/argo
+      user: devzero
